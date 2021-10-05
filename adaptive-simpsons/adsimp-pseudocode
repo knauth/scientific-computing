@@ -1,0 +1,36 @@
+# Evaluates Simpson's Rule for a given interval. Returns midpoint and function values.
+func eval_simpson(f, a, fa, b, fb):
+    midpt = (a+b) / 2
+    fmidpt = f(midpt)
+    return (midpt, fmidpt, abs(b-a) / 6 * (fa + 4*fmidpt + fb))
+
+# The recursive function for Adaptive Simpson's
+func rec_adsimp(f, a, fa, b, fb, err_tol, whole, midpt, fmidpt)
+    lmidpt, flmidpt, left = eval_simpson(f, a, fa, midpt, fmidpt) # Eval on the left and right intervals
+    rmidpt, frmidpt, right = eval_simpson(f, a, fa, midpt, fmidpt) # Midpoints are saved
+
+    delta = left + right - whole # The difference between sum of the two new intervals
+    # and the calculation over the old interval (both new intervals' domains)
+    
+    if abs(delta) <= 15 * err_tol: # Base case
+        return left + right + delta / 15 # If the difference is sufficiently small, the result
+        # is within tolerance, so cease recursion
+    # Otherwise split each interval (recurse) again:
+    return rec_adsimp(f, a, fa, m, fm, err/2, left, lmidpt, flmidpt) +
+           rec_adsimp(f, m, fb, b, fb, err/2, right, rmidpt, frmidpt)
+           
+           
+func f():
+    # Some function here
+    
+a = # Start of interval
+b = # End of interval
+err_tol = # Error tolerance (often about 1e-8)
+
+# Initial values to pass to the recursive function
+fa = f(a)
+fb = f(b)
+midpt, fmidpt, whole = eval_simpson(f, a, fa, b, fb)
+
+#Evaluate
+rec_adsimp(f, a, fa, b, fb, err_tol, whole, midpt, fmidpt)
